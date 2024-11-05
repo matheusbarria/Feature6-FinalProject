@@ -12,16 +12,18 @@ export class AuthService {
       return user;
     } catch (error) {
       console.error("Login failed:", error);
-      throw new Error(
-        error.message || "Login failed. Please check your credentials."
-      );
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("Login failed. Please check your credentials.");
+      }
     }
   }
 
   static async signup(email: string, password: string): Promise<User> {
     try {
       const user = new Parse.User();
-      user.set("username", email); // Parse requires username
+      user.set("username", email);
       user.set("email", email);
       user.set("password", password);
 
@@ -31,7 +33,11 @@ export class AuthService {
       return newUser;
     } catch (error) {
       console.error("Signup failed:", error);
-      throw new Error(error.message || "Signup failed. Please try again.");
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error("Signup failed. Please try again.");
+      }
     }
   }
 
@@ -40,7 +46,6 @@ export class AuthService {
       id: parseUser.id,
       email: parseUser.get("email"),
       username: parseUser.get("username"),
-      // Add any other user fields you need
     };
   }
 

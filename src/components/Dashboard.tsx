@@ -45,21 +45,6 @@ export const Dashboard: React.FC = () => {
               <p>Last Login: {new Date().toLocaleDateString()}</p>
             </div>
           </div>
-
-          <div className="mt-8">
-            <h3 className="font-medium mb-4">Quick Actions</h3>
-            <div className="grid gap-4 md:grid-cols-3">
-              <button className="bg-blue-500 text-white p-3 rounded hover:bg-blue-600">
-                View Profile
-              </button>
-              <button className="bg-green-500 text-white p-3 rounded hover:bg-green-600">
-                Update Settings
-              </button>
-              <button className="bg-purple-500 text-white p-3 rounded hover:bg-purple-600">
-                View Activity
-              </button>
-            </div>
-          </div>
         </div>
       </div>
     </div>
