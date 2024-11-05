@@ -1,3 +1,18 @@
+## [0.3.0] - 2024-11-05
+### Added
+- Complete authentication system using Parse
+- User signup functionality with email and password
+- User login with credential verification
+- Protected routes requiring authentication
+- Dashboard component for authenticated users
+- Redux state management for auth state
+- AuthService class for handling Parse authentication
+- Loading states and error handling for auth operations
+- Session persistence using Parse User tokens
+- Automatic redirection for authenticated/unauthenticated users
+- Logout functionality with state cleanup
+
+- 
 ## [0.2.0]
 ### Added
 - Routing setup with React Router.
