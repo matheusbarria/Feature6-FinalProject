@@ -22,17 +22,17 @@ export const Dashboard: React.FC = () => {
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold">Dashboard</h1>
           <button
+            onClick={() => navigate('/expenses')}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mr-4"
+          >
+            Expense Tracker
+          </button>
+          <button
             onClick={handleLogout}
             className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
           >
             Logout
           </button>
-          <Link
-            to="/expenses"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mr-4"
-          >
-            Expense Tracker
-          </Link>
         </div>
 
         <div className="bg-white rounded-lg shadow p-6">
