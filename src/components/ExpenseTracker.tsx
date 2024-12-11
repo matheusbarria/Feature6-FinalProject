@@ -24,7 +24,45 @@ export const ExpenseTracker: React.FC = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const { user } = useAppSelector((state) => state.auth);
+  const [sortBy, setSortBy] = useState<'date' | 'amount' | 'category'>('date');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
 
+  const getSortedExpenses = () => {
+    return [...expenses].sort((a, b) => {
+      if (sortBy === 'date') {
+        return sortOrder === 'desc' 
+          ? new Date(b.date).getTime() - new Date(a.date).getTime()
+          : new Date(a.date).getTime() - new Date(b.date).getTime();
+      }
+      if (sortBy === 'amount') {
+        return sortOrder === 'desc' ? b.amount - a.amount : a.amount - b.amount;
+      }
+      if (sortBy === 'category') {
+        return sortOrder === 'desc' 
+          ? b.category.localeCompare(a.category)
+          : a.category.localeCompare(b.category);
+      }
+      return 0;
+    });
+  };
+  const getExpenseStats = () => {
+    if (expenses.length === 0) return null;
+    
+    const total = expenses.reduce((sum, exp) => sum + exp.amount, 0);
+    const average = total / expenses.length;
+    
+    const categoryCount: Record<string, number> = {};
+    expenses.forEach(exp => {
+      categoryCount[exp.category] = (categoryCount[exp.category] || 0) + 1;
+    });
+    
+    const mostUsedCategory = Object.entries(categoryCount)
+      .sort(([,a], [,b]) => b - a)[0][0];
+      
+    const highestExpense = Math.max(...expenses.map(exp => exp.amount));
+    
+    return { total, average, mostUsedCategory, highestExpense };
+  };
   useEffect(() => {
     if (user) {
       loadExpenses();
@@ -188,13 +226,54 @@ export const ExpenseTracker: React.FC = () => {
           <BudgetLimitManager onLimitsChange={loadBudgetLimits} />
         </div>
       </div>
+      
+      <div className="mb-4 flex items-center gap-4">
+  <select 
+    value={sortBy}
+    onChange={(e) => setSortBy(e.target.value as 'date' | 'amount' | 'category')}
+    className="p-2 border rounded"
+  >
+    <option value="date">Sort by Date</option>
+    <option value="amount">Sort by Amount</option>
+    <option value="category">Sort by Category</option>
+  </select>
+  <button
+    onClick={() => setSortOrder(order => order === 'asc' ? 'desc' : 'asc')}
+    className="p-2 border rounded"
+  >
+    {sortOrder === 'asc' ? '↑' : '↓'}
+  </button>
+</div>
+{getExpenseStats() && (
+  <div className="mb-8 bg-white p-4 rounded shadow-sm">
+    <h3 className="text-lg font-semibold mb-4">Expense Statistics</h3>
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div>
+        <p className="text-gray-600">Total Expenses</p>
+        <p className="text-xl font-bold">${getExpenseStats()?.total.toFixed(2)}</p>
+      </div>
+      <div>
+        <p className="text-gray-600">Average Expense</p>
+        <p className="text-xl font-bold">${getExpenseStats()?.average.toFixed(2)}</p>
+      </div>
+      <div>
+        <p className="text-gray-600">Most Used Category</p>
+        <p className="text-xl font-bold">{getExpenseStats()?.mostUsedCategory}</p>
+      </div>
+      <div>
+        <p className="text-gray-600">Highest Expense</p>
+        <p className="text-xl font-bold">${getExpenseStats()?.highestExpense.toFixed(2)}</p>
+      </div>
+    </div>
+  </div>
+)}
 
       {/* Recent Expenses */}
       <div className="mt-10">
         <h3 className="text-xl font-semibold mb-4 text-gray-700">Recent Expenses</h3>
         {expenses.length > 0 ? (
           <div className="space-y-2">
-            {expenses.map((expense) => {
+            {getSortedExpenses().map((expense) => {
               const isOverBudget = budgetWarnings.some((w) => w.category === expense.category);
               return (
                 <div
