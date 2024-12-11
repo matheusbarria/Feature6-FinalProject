@@ -8,6 +8,7 @@ import { AuthProvider } from "./components/AuthProvider";
 import { Login } from "./components/Login";
 import { Signup } from "./components/Signup";
 import { Dashboard } from "./components/Dashboard";
+import { ExpenseTracker } from "./components/ExpenseTracker";
 import Parse from "parse";
 
 // initializing our backend in back4app
@@ -56,6 +57,14 @@ const App: React.FC = () => {
               }
             />
             <Route path="*" element={<Navigate to="/" replace />} />
+            <Route
+              path="/expenses"
+              element={
+                <ProtectedRoute>
+                  <ExpenseTracker />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </AuthProvider>
       </BrowserRouter>

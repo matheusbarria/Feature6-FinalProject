@@ -1,6 +1,6 @@
 // components/Dashboard.tsx
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../hooks/redux";
 import { AuthService } from "../authService";
 import { clearUser } from "../authSlice";
@@ -27,6 +27,12 @@ export const Dashboard: React.FC = () => {
           >
             Logout
           </button>
+          <Link
+            to="/expenses"
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mr-4"
+          >
+            Expense Tracker
+          </Link>
         </div>
 
         <div className="bg-white rounded-lg shadow p-6">

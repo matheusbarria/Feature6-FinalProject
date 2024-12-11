@@ -14,3 +14,26 @@ export interface AuthState {
 export interface RootState {
   auth: AuthState;
 }
+
+export interface Expense {
+  id: string;
+  amount: number;
+  category: string;
+  description: string;
+  date: Date;
+  userId: string;
+}
+
+export interface ExpenseCategory {
+  id: string;
+  name: string;
+  color: string;
+}
+
+export interface BudgetLimit {
+  id: string;
+  category: string;
+  amount: number;
+  period: 'daily' | 'weekly' | 'monthly';
+  userId: string;
+}
