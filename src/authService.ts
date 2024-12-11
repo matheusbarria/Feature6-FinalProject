@@ -22,17 +22,21 @@ export class AuthService {
 
   static async signup(email: string, password: string): Promise<User> {
     try {
+      console.log('Starting signup process...');
       const user = new Parse.User();
       user.set("username", email);
       user.set("email", email);
       user.set("password", password);
 
+      console.log('Attempting to create user...');
       const parseUser = await user.signUp();
+      console.log('User created successfully:', parseUser);
+      
       const newUser = this.convertParseUserToUser(parseUser);
       this.setToken(parseUser.getSessionToken());
       return newUser;
     } catch (error) {
-      console.error("Signup failed:", error);
+      console.error("Detailed signup error:", error);
       if (error instanceof Error) {
         throw new Error(error.message);
       } else {
