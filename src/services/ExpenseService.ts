@@ -41,4 +41,9 @@ export class ExpenseService {
       userId: expense.get('userId').id
     }));
   }
+  static async deleteExpense(id: string): Promise<void> {
+    const query = new Parse.Query('Expense');
+    const expense = await query.get(id);
+    await expense.destroy();
+  }
 }

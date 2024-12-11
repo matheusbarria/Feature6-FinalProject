@@ -186,6 +186,15 @@ export const ExpenseTracker: React.FC = () => {
                   <span className={`${isOverBudget ? 'text-red-600' : 'text-gray-600'}`}>
                     {expense.category}
                   </span>
+                  <button
+            onClick={async () => {
+              await ExpenseService.deleteExpense(expense.id);
+              await loadExpenses();
+            }}
+            className="text-red-500 hover:text-red-700"
+          >
+            Delete
+          </button>
                 </div>
                 <p className="text-gray-600">{expense.description}</p>
                 <p className="text-sm text-gray-500">

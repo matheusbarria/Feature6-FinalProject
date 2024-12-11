@@ -29,4 +29,9 @@ export class CategoryService {
       color: category.get('color')
     }));
   }
+  static async deleteCategory(id: string): Promise<void> {
+    const query = new Parse.Query('ExpenseCategory');
+    const category = await query.get(id);
+    await category.destroy();
+  }
 }

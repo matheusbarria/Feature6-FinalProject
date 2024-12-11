@@ -37,4 +37,9 @@ export class BudgetLimitService {
       userId: limit.get('userId').id
     }));
   }
+  static async deleteBudgetLimit(id: string): Promise<void> {
+    const query = new Parse.Query('BudgetLimit');
+    const budgetLimit = await query.get(id);
+    await budgetLimit.destroy();
+  }
 }

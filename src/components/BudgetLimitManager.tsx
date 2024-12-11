@@ -80,14 +80,26 @@ export const BudgetLimitManager: React.FC<BudgetLimitManagerProps> = ({ onLimits
       </form>
 
       <div className="grid gap-2">
-        {budgetLimits.map(limit => (
-          <div key={limit.id} className="border p-3 rounded">
-            <div className="flex justify-between items-center">
-              <span className="font-medium">{limit.category}</span>
-              <span>${limit.amount} ({limit.period})</span>
-            </div>
-          </div>
-        ))}
+  {budgetLimits.map(limit => (
+    <div key={limit.id} className="border p-3 rounded">
+      <div className="flex justify-between items-center">
+        <span className="font-medium">{limit.category}</span>
+        <div>
+          <span className="mr-4">${limit.amount} ({limit.period})</span>
+          <button
+            onClick={async () => {
+              await BudgetLimitService.deleteBudgetLimit(limit.id);
+              await loadBudgetLimits();
+              if (onLimitsChange) await onLimitsChange();
+            }}
+            className="text-red-500 hover:text-red-700"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  ))}
       </div>
     </div>
   );

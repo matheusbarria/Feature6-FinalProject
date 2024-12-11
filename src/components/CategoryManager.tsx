@@ -48,20 +48,31 @@ export const CategoryManager: React.FC = () => {
       </form>
 
       <div className="grid grid-cols-2 gap-2">
-        {categories.map(category => (
-          <div 
-            key={category.id} 
-            className="p-2 rounded flex justify-between items-center"
-            style={{ backgroundColor: category.color + '20' }}
-          >
-            <span>{category.name}</span>
-            <div 
-              className="w-4 h-4 rounded-full" 
-              style={{ backgroundColor: category.color }}
-            />
-          </div>
-        ))}
+  {categories.map(category => (
+    <div 
+      key={category.id} 
+      className="p-2 rounded flex justify-between items-center"
+      style={{ backgroundColor: category.color + '20' }}
+    >
+      <span>{category.name}</span>
+      <div className="flex items-center">
+        <div 
+          className="w-4 h-4 rounded-full mr-2" 
+          style={{ backgroundColor: category.color }}
+        />
+        <button
+          onClick={async () => {
+            await CategoryService.deleteCategory(category.id);
+            await loadCategories();
+          }}
+          className="text-red-500 hover:text-red-700"
+        >
+          Delete
+        </button>
       </div>
+    </div>
+  ))}
+</div>
     </div>
   );
 };
