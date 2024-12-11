@@ -3,7 +3,11 @@ import { useAppSelector } from '../hooks/redux';
 import { BudgetLimitService } from '../services/BudgetLimitService';
 import { BudgetLimit } from '../types';
 
-export const BudgetLimitManager: React.FC = () => {
+interface BudgetLimitManagerProps {
+  onLimitsChange?: () => Promise<void>;
+}
+
+export const BudgetLimitManager: React.FC<BudgetLimitManagerProps> = ({ onLimitsChange }) => {
   const [budgetLimits, setBudgetLimits] = useState<BudgetLimit[]>([]);
   const [category, setCategory] = useState('');
   const [amount, setAmount] = useState('');
