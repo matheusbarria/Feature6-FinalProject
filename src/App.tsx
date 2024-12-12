@@ -9,6 +9,7 @@ import { Login } from "./components/Login";
 import { Signup } from "./components/Signup";
 import { Dashboard } from "./components/Dashboard";
 import { ExpenseTracker } from "./components/ExpenseTracker";
+import { SavingsGoalManager } from "./components/SavingsGoalManager";
 import Parse from "parse";
 
 // initializing our backend in back4app
@@ -62,6 +63,14 @@ const App: React.FC = () => {
               element={
                 <ProtectedRoute>
                   <ExpenseTracker />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/savings"
+              element={
+                <ProtectedRoute>
+                  <SavingsGoalManager />
                 </ProtectedRoute>
               }
             />
