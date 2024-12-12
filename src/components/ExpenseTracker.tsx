@@ -7,6 +7,7 @@ import { CategoryManager } from './CategoryManager';
 import { BudgetLimitManager } from './BudgetLimitManager';
 import { checkBudgetLimits } from '../utils/budgetUtils';
 import { Expense, ExpenseCategory, BudgetLimit } from '../types';
+import { useNavigate } from 'react-router-dom';
 
 export const ExpenseTracker: React.FC = () => {
   const [expenses, setExpenses] = useState<Expense[]>([]);
@@ -26,6 +27,8 @@ export const ExpenseTracker: React.FC = () => {
   const { user } = useAppSelector((state) => state.auth);
   const [sortBy, setSortBy] = useState<'date' | 'amount' | 'category'>('date');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [expenseDate, setExpenseDate] = useState(new Date().toISOString().split('T')[0]);
+  const navigate = useNavigate();
 
   const getSortedExpenses = () => {
     return [...expenses].sort((a, b) => {
@@ -116,7 +119,7 @@ export const ExpenseTracker: React.FC = () => {
         amount: parseFloat(amount),
         category,
         description,
-        date: new Date(),
+        date: new Date(expenseDate),
         userId: user.id,
       };
 
@@ -125,6 +128,7 @@ export const ExpenseTracker: React.FC = () => {
       setAmount('');
       setCategory('');
       setDescription('');
+      setExpenseDate(new Date().toISOString().split('T')[0]);
     }
   };
 
@@ -135,7 +139,15 @@ export const ExpenseTracker: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <h2 className="text-3xl font-bold mb-6 text-gray-800">Expense Tracker</h2>
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-3xl font-bold text-gray-800">Expense Tracker</h2>
+        <button
+          onClick={() => navigate('/dashboard')}
+          className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded flex items-center gap-2"
+        >
+          <span>←</span> Back to Dashboard
+        </button>
+      </div>
 
       {/* Budget Warnings */}
       {budgetWarnings.length > 0 && (
@@ -204,6 +216,13 @@ export const ExpenseTracker: React.FC = () => {
             ))}
           </select>
           <input
+            type="date"
+            value={expenseDate}
+            onChange={(e) => setExpenseDate(e.target.value)}
+            required
+            className="p-2 border rounded flex-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <input
             type="text"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -268,9 +287,11 @@ export const ExpenseTracker: React.FC = () => {
   </div>
 )}
 
+
       {/* Recent Expenses */}
       <div className="mt-10">
         <h3 className="text-xl font-semibold mb-4 text-gray-700">Recent Expenses</h3>
+        
         {expenses.length > 0 ? (
           <div className="space-y-2">
             {getSortedExpenses().map((expense) => {
