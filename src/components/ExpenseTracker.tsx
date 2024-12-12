@@ -303,9 +303,12 @@ export const ExpenseTracker: React.FC = () => {
               return (
                 <div
                   key={expense.id}
-                  className={`flex items-center justify-between p-3 rounded ${
-                    isOverBudget ? 'bg-red-50' : 'bg-white'
-                  }`}
+                  className={`flex items-center justify-between p-3 rounded`}
+                  style={{ 
+                    backgroundColor: isOverBudget 
+                      ? 'rgb(254 242 242)' // bg-red-50
+                      : `${getCategoryColor(expense.category)}20` // category color with 20% opacity
+                  }}
                 >
                   <div className="flex items-center space-x-4">
                     <div
