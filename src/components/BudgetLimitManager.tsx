@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAppSelector } from '../hooks/redux';
 import { BudgetLimitService } from '../services/BudgetLimitService';
-import { BudgetLimit } from '../types';
+import { CategoryService } from '../services/CategoryService';
+import { BudgetLimit, ExpenseCategory } from '../types';
 
 interface BudgetLimitManagerProps {
   onLimitsChange?: () => Promise<void>;
@@ -9,6 +10,7 @@ interface BudgetLimitManagerProps {
 
 export const BudgetLimitManager: React.FC<BudgetLimitManagerProps> = ({ onLimitsChange }) => {
   const [budgetLimits, setBudgetLimits] = useState<BudgetLimit[]>([]);
+  const [categories, setCategories] = useState<ExpenseCategory[]>([]);
   const [category, setCategory] = useState('');
   const [amount, setAmount] = useState('');
   const [period, setPeriod] = useState<'daily' | 'weekly' | 'monthly'>('monthly');
@@ -17,6 +19,7 @@ export const BudgetLimitManager: React.FC<BudgetLimitManagerProps> = ({ onLimits
   useEffect(() => {
     if (user) {
       loadBudgetLimits();
+      loadCategories();
     }
   }, [user]);
 
@@ -25,6 +28,11 @@ export const BudgetLimitManager: React.FC<BudgetLimitManagerProps> = ({ onLimits
       const limits = await BudgetLimitService.getBudgetLimits(user.id);
       setBudgetLimits(limits);
     }
+  };
+
+  const loadCategories = async () => {
+    const fetchedCategories = await CategoryService.getCategories();
+    setCategories(fetchedCategories);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -49,14 +57,19 @@ export const BudgetLimitManager: React.FC<BudgetLimitManagerProps> = ({ onLimits
       <h3 className="text-lg font-semibold mb-4">Budget Limits</h3>
       
       <form onSubmit={handleSubmit} className="mb-4">
-        <input
-          type="text"
+        <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          placeholder="Category"
           className="mr-2 p-2 border rounded"
           required
-        />
+        >
+          <option value="">Select Category</option>
+          {categories.map((cat) => (
+            <option key={cat.id} value={cat.name}>
+              {cat.name}
+            </option>
+          ))}
+        </select>
         <input
           type="number"
           value={amount}

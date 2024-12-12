@@ -115,11 +115,15 @@ export const ExpenseTracker: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (user) {
+      // Parse the date and adjust for timezone
+      const [year, month, day] = expenseDate.split('-').map(Number);
+      const selectedDate = new Date(year, month - 1, day);
+      
       const newExpense = {
         amount: parseFloat(amount),
         category,
         description,
-        date: new Date(expenseDate),
+        date: selectedDate,
         userId: user.id,
       };
 
