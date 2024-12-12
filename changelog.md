@@ -1,3 +1,32 @@
+## [0.4.0] - 2024-11-07
+### Added
+- Comprehensive expense tracking system with:
+  - Add, view, and delete expenses
+  - Category management with color coding
+  - Budget limit management with period-based limits
+  - Date-based filtering of expenses
+  - Sorting capabilities by date, amount, and category
+  - Expense statistics including totals, averages, and trends
+- Budget warning system that alerts users when approaching limits
+- Expense categorization with visual indicators
+- Detailed expense statistics dashboard showing:
+  - Total expenses
+  - Average expense amount
+  - Most used category
+  - Highest single expense
+- Interactive UI components:
+  - Color-coded category management
+  - Period-based budget limits (daily/weekly/monthly)
+  - Date range filters
+  - Sort controls for expense list
+- Data visualization with color-coded categories and budget warnings
+
+### Changed
+- Updated application title to "BudgetBee"
+- Added favicon and PNG image support for better branding
+- Enhanced user interface with Tailwind CSS styling
+- Improved data organization with Parse backend integration
+
 ## [0.3.0] - 2024-11-05
 ### Added
 - Complete authentication system using Parse
